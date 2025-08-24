@@ -1,0 +1,28 @@
+{
+  "name": "rag-mitre-js",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "RAG MITRE ATT&CK (Node.js + LanceDB + OpenAI/Ollama)",
+  "main": "app.mjs",
+  "scripts": {
+    "ingest": "node scripts/ingest.js",
+    "index": "node scripts/buildIndex.js",
+    "start": "node app.mjs",
+    "dev": "nodemon server.mjs"
+  },
+  "author": "Augusto Villegas",
+  "license": "ISC",
+  "dependencies": {
+    "@lancedb/lancedb": "^0.21.3",
+    "apache-arrow": "^18.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-ejs-layouts": "^2.5.1",
+    "node-fetch": "^3.3.2",
+    "nodemon": "^3.1.10",
+    "openai": "^5.15.0",
+    "zod": "^3.25.6"
+  }
+}

@@ -1,0 +1,71 @@
+<section class="mt-2 w-full flex flex-col flex-1 px-2 sm:px-4 max-w-full lg:max-w-5xl mx-auto">
+
+  <!-- Info + botón reinicio -->
+  <div class="bg-blue-100 border border-blue-300 text-blue-800 p-3 rounded-lg text-sm mb-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <p class="flex-1 text-sm">
+      🧠 Este chat guarda tus preguntas y respuestas de forma temporal en tu navegador.
+    </p>
+    <button id="btn-reset" class="bg-white border border-gray-300 text-gray-700 px-4 py-1.5 rounded-md hover:bg-gray-100 shadow transition font-medium text-sm">
+      🗑️ Reiniciar
+    </button>
+  </div>
+
+  <!-- Chat -->
+  <div id="chat-box" class="flex-1 min-h-0 overflow-y-auto space-y-4 mb-2 border border-gray-200 rounded-lg p-4 bg-white shadow-inner scroll-smooth">
+    <!-- Burbujas dinámicas -->
+  </div>
+
+  <!-- Indicador de escribiendo -->
+  <div id="asistente-escribiendo" class="hidden text-sm text-gray-500 animate-pulse mb-2 px-1">
+    <span class="text-red-600 font-bold">Asistente:</span>
+    <span class="ml-2">escribiendo<span class="dots">...</span></span>
+  </div>
+
+  <!-- Formulario tipo ChatGPT -->
+  <form id="form-chat" class="relative bg-white border border-gray-300 rounded-full shadow px-3 flex items-center w-full mt-2">
+    <textarea name="pregunta" id="pregunta" rows="1" required
+      placeholder="Escribe tu consulta y presiona Enter..."
+      class="flex-1 resize-none overflow-hidden rounded-full p-3 text-sm sm:text-base focus:outline-none focus:ring-0 border-none"
+      style="min-height: 44px; max-height: 120px;"></textarea>
+
+    <button type="submit" class="ml-2 text-white bg-red-600 hover:bg-red-700 transition rounded-full w-10 h-10 flex items-center justify-center shadow-md">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M5 12h14M12 5l7 7-7 7" />
+      </svg>
+    </button>
+  </form>
+</section>
+
+<!-- Modal reinicio -->
+<div id="modal-confirmar-reset" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-lg p-6 shadow-lg w-full max-w-sm space-y-4">
+    <h3 class="text-lg font-semibold text-gray-800">¿Reiniciar conversación?</h3>
+    <p class="text-sm text-gray-600">Se eliminará todo el historial guardado en esta sesión.</p>
+    <div class="flex justify-end gap-2 pt-2">
+      <button id="cancelar-reset" class="px-4 py-1 rounded border border-gray-300 text-gray-700 hover:bg-gray-50">Cancelar</button>
+      <button id="confirmar-reset" class="px-4 py-1 rounded bg-red-600 text-white hover:bg-red-700">Reiniciar</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .animate-fade-in { opacity: 0; animation: fadeIn 0.5s ease-in forwards; }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  .dots::after {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    animation: dots 1s steps(3, end) infinite;
+  }
+  @keyframes dots {
+    0% { content: ''; }
+    33% { content: '.'; }
+    66% { content: '..'; }
+    100% { content: '...' }
+  }
+</style>
+
+<script src="/js/chatFrontend.js"></script>
