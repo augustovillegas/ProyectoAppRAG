@@ -1,6 +1,23 @@
-<footer class="bg-black border-t border-gray-800 text-xs sm:text-sm text-green-400 font-mono py-4 px-4 flex flex-col sm:flex-row sm:justify-between items-center gap-1">
-  <span class="opacity-90">🧠 Proyecto RAG & MITRE ATT&CK — Ciberseguridad · <%= new Date().getFullYear() %></span>
-  <span class="text-gray-400 text-xs sm:text-sm tracking-wide hover:text-green-300 transition-colors">
-   <span class="font-semibold text-green-400"> Dev. Augusto Villegas</span>
+<footer
+  class="bg-black border-t border-gray-800 text-xs sm:text-sm text-green-400 font-mono py-4 px-4 flex flex-col sm:flex-row sm:justify-between items-center gap-1"
+>
+  <span class="flex items-center gap-2 opacity-90">
+    <svg
+      class="w-4 h-4 hidden sm:inline-block text-green-400"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+    >
+      <path d="M4 4h16v16H4V4zm2 2v12h12V6H6zm2 2h2v2H8V8zm0 4h8v2H8v-2z" />
+    </svg>
+
+    RAG & MITRE ATT&CK — Ciberseguridad · <%= new Date().getFullYear()
+    %>
+  </span>
+
+  <span
+    class="text-gray-400 text-xs sm:text-sm tracking-wide hover:text-green-300 transition-colors"
+  >
+    <span class="font-semibold text-green-400"> Dev. Augusto Villegas</span>
   </span>
 </footer>
