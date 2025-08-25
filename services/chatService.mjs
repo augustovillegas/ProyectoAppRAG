@@ -1,6 +1,7 @@
 import { getOpenAI } from '../config/openai.mjs';
 import { getEmbedding } from './embeddingService.mjs';
 import { SYSTEM_PROMPT, USER_PROMPT_TEMPLATE } from '../models/prompts.mjs';
+import { getRelevantDocs } from '../repository/mitreRepository.mjs';
 
 const CHAT_MODEL = process.env.OPENAI_MODEL || 'gpt-4o-mini';
 
@@ -32,6 +33,7 @@ export async function askQuestionService(question) {
       citations: Array.from(new Map(citations.map(c => [c.mitre_id || c.url, c])).values())
     };
   } catch (error) {
+    console.error("❌ Error en askQuestionService:", error); // 👈 LOG NUEVO
     if (error.code === 'insufficient_quota') {
       throw new Error('🚫 Tu cuenta de OpenAI no tiene crédito disponible. Revisá tu plan y uso.');
     }

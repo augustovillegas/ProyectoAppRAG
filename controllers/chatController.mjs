@@ -8,6 +8,7 @@ export async function askMitre(req, res) {
     const resultado = await askQuestionService(pregunta);
     return res.json(resultado);
   } catch (err) {
+    console.error("❌ Error en askMitre:", err); // 👈 LOG NUEVO
     const errorMensaje = obtenerMensajeDeError(err);
     return res.status(400).json({ error: errorMensaje });
   }
@@ -38,6 +39,8 @@ export async function handleChat(req, res) {
       error: null
     });
   } catch (err) {
+    console.error("❌ Error en handleChat:", err); // 👈 LOG NUEVO
+
     return res.render("chat", {
       respuesta: null,
       citas: [],

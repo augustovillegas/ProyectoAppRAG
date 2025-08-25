@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 8000;
 
 // 🧭 Rutas absolutas
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const INDEX_PATH = path.join(__dirname, 'data', 'lancedb', 'mitre_attck');
+const INDEX_PATH = path.join(__dirname, 'data', 'lancedb'); // <-- CORREGIDO
 const INGEST_PATH = path.join(__dirname, 'scripts', 'ingest.mjs');
 const INDEX_SCRIPT_PATH = path.join(__dirname, 'scripts', 'buildIndex.mjs');
 
