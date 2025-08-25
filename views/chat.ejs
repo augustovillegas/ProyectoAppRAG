@@ -4,22 +4,21 @@
 <!-- Info + Botones en la misma fila en desktop, en columna en móvil -->
 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 w-full mb-4">
 
-  <!-- Info -->
-  <div class="bg-blue-100 border border-blue-300 text-blue-800 p-2 rounded-lg text-base sm:text-sm w-full sm:flex-1">
-    🧐 Este chat guarda tus preguntas y respuestas de forma temporal en tu navegador.
-  </div>
+  <div class="bg-blue-100 border border-blue-300 text-blue-800 p-2 rounded-lg text-base sm:text-sm w-full sm:flex-1 flex items-center gap-2">
+  <img src="/icons/info.svg" alt="Info" class="w-5 h-5 shrink-0" />
+  <div>Este chat guarda tus preguntas y respuestas de forma temporal en tu navegador.</div>
+</div>
 
-  <!-- Botón Reiniciar -->
-  <button id="btn-reset" class="w-full sm:w-auto bg-white border border-gray-300 text-gray-700 px-5 py-2 rounded-md hover:bg-gray-100 shadow transition font-medium text-base sm:text-sm">
-    🗑️ Reiniciar chat
+  <!-- Botón Reiniciar chat -->
+  <button id="btn-reset" class="w-full sm:w-auto bg-white border border-gray-300 text-gray-700 px-5 py-2 rounded-md hover:bg-gray-100 shadow transition font-medium text-base sm:text-sm flex items-center justify-center gap-2">
+  <img src="/icons/reset.svg" alt="Reiniciar" class="w-5 h-5 sm:w-4 sm:h-4" />
+   Reiniciar chat
   </button>
 
   <!-- Botón Descargar PDF -->
   <button id="btn-descargar-pdf" class="w-full sm:w-auto bg-white border border-gray-300 text-gray-700 px-5 py-2 rounded-md hover:bg-gray-100 shadow transition font-medium text-base sm:text-sm flex items-center justify-center gap-2">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m0 0l-6-6m6 6l6-6"/>
-    </svg>
-    Descargar PDF
+  <img src="/icons/download.svg" alt="Descargar" class="w-5 h-5 sm:w-4 sm:h-4" />
+   Descargar PDF
   </button>
 </div>
 
