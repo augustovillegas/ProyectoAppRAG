@@ -1,52 +1,56 @@
-<section class="mt-2 mb-2 w-full flex flex-col flex-1 px-2 sm:px-4 max-w-full lg:max-w-5xl mx-auto">
+<section class="mt-4 mb-4 w-full flex flex-col flex-1 px-4 sm:px-6 max-w-full lg:max-w-5xl mx-auto text-[17px] sm:text-sm">
 
-  <!-- Info + botones -->
-  <div class="bg-blue-100 border border-blue-300 text-blue-800 p-3 rounded-lg text-sm mb-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 flex-wrap">
-    <p class="flex-1 text-sm">
-      🧠 Este chat guarda tus preguntas y respuestas de forma temporal en tu navegador.
-    </p>
 
-    <div class="flex items-center gap-2 flex-wrap justify-end">
-      <button id="btn-reset" class="bg-white border border-gray-300 text-gray-700 px-4 py-1.5 rounded-md hover:bg-gray-100 shadow transition font-medium text-sm">
-        🗑️ Reiniciar
-      </button>
+<!-- Info + Botones en la misma fila en desktop, en columna en móvil -->
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 w-full mb-4">
 
-      <button id="btn-descargar-pdf" class="bg-white border border-gray-300 text-gray-700 px-4 py-1.5 rounded-md hover:bg-gray-100 shadow transition font-medium text-sm flex items-center gap-1">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 4v16m0 0l-6-6m6 6l6-6"/>
-        </svg>
-        Descargar PDF
-      </button>
-    </div>
+  <!-- Info -->
+  <div class="bg-blue-100 border border-blue-300 text-blue-800 p-2 rounded-lg text-base sm:text-sm w-full sm:flex-1">
+    🧐 Este chat guarda tus preguntas y respuestas de forma temporal en tu navegador.
   </div>
 
-  <!-- Chat -->
-  <div id="chat-box" class="flex-1 min-h-0 overflow-y-auto space-y-4 mb-2 border border-gray-200 rounded-lg p-4 bg-white shadow-inner scroll-smooth">
-    <!-- Burbujas dinámicas -->
-  </div>
+  <!-- Botón Reiniciar -->
+  <button id="btn-reset" class="w-full sm:w-auto bg-white border border-gray-300 text-gray-700 px-5 py-2 rounded-md hover:bg-gray-100 shadow transition font-medium text-base sm:text-sm">
+    🗑️ Reiniciar chat
+  </button>
 
-  <!-- Indicador de escribiendo -->
-  <div id="asistente-escribiendo" class="hidden text-sm text-gray-500 animate-pulse mb-2 px-1">
-    <span class="text-red-600 font-bold">Asistente:</span>
-    <span class="ml-2">escribiendo<span class="dots">...</span></span>
-  </div>
+  <!-- Botón Descargar PDF -->
+  <button id="btn-descargar-pdf" class="w-full sm:w-auto bg-white border border-gray-300 text-gray-700 px-5 py-2 rounded-md hover:bg-gray-100 shadow transition font-medium text-base sm:text-sm flex items-center justify-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m0 0l-6-6m6 6l6-6"/>
+    </svg>
+    Descargar PDF
+  </button>
+</div>
 
-  <!-- Formulario tipo ChatGPT -->
-  <form id="form-chat" class="relative bg-white border border-gray-300 rounded-full shadow px-3 flex items-center w-full mt-2">
-    <textarea name="pregunta" id="pregunta" rows="1" required
-      placeholder="Escribe tu consulta y presiona Enter..."
-      class="flex-1 resize-none overflow-hidden rounded-full p-3 text-sm sm:text-base focus:outline-none focus:ring-0 border-none"
-      style="min-height: 44px; max-height: 120px;"></textarea>
 
-    <button type="submit" class="ml-2 text-white bg-red-600 hover:bg-red-700 transition rounded-full w-10 h-10 flex items-center justify-center shadow-md">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-        viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M5 12h14M12 5l7 7-7 7" />
-      </svg>
-    </button>
-  </form>
+<!-- Chat -->
+<div id="chat-box" class="flex-1 min-h-[300px] overflow-y-auto space-y-5 mb-4 border border-gray-300 rounded-xl p-5 bg-white shadow-inner scroll-smooth">
+<!-- mensajes -->
+</div>
+
+
+<!-- Indicador escribiendo -->
+<div id="asistente-escribiendo" class="hidden text-[16px] text-gray-500 animate-pulse mb-2 px-1 font-mono">
+<span class="text-red-600 font-bold">Asistente:</span>
+<span class="ml-2">escribiendo<span class="dots">...</span></span>
+</div>
+
+
+<!-- Formulario chat -->
+<form id="form-chat" class="relative bg-white border border-gray-300 rounded-full shadow px-4 flex items-center w-full mt-2">
+<textarea name="pregunta" id="pregunta" rows="1" required
+ placeholder="Escribí tu consulta y presioná Enter..."
+ class="flex-1 resize-none overflow-hidden rounded-full p-4 text-[17px] sm:text-sm placeholder:text-sm sm:placeholder:text-base focus:outline-none focus:ring-0 border-none leading-snug"
+ style="min-height: 56px; max-height: 160px;"></textarea>
+
+
+<button type="submit" class="ml-2 text-white bg-red-600 hover:bg-red-700 transition rounded-full w-12 h-12 flex items-center justify-center shadow-md">
+<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
+</svg>
+</button>
+</form>
 </section>
 
 <!-- Modal reinicio -->
