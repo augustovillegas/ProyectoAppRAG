@@ -1,13 +1,24 @@
 <section class="mt-2 mb-2 w-full flex flex-col flex-1 px-2 sm:px-4 max-w-full lg:max-w-5xl mx-auto">
 
-  <!-- Info + botón reinicio -->
-  <div class="bg-blue-100 border border-blue-300 text-blue-800 p-3 rounded-lg text-sm mb-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+  <!-- Info + botones -->
+  <div class="bg-blue-100 border border-blue-300 text-blue-800 p-3 rounded-lg text-sm mb-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 flex-wrap">
     <p class="flex-1 text-sm">
       🧠 Este chat guarda tus preguntas y respuestas de forma temporal en tu navegador.
     </p>
-    <button id="btn-reset" class="bg-white border border-gray-300 text-gray-700 px-4 py-1.5 rounded-md hover:bg-gray-100 shadow transition font-medium text-sm">
-      🗑️ Reiniciar
-    </button>
+
+    <div class="flex items-center gap-2 flex-wrap justify-end">
+      <button id="btn-reset" class="bg-white border border-gray-300 text-gray-700 px-4 py-1.5 rounded-md hover:bg-gray-100 shadow transition font-medium text-sm">
+        🗑️ Reiniciar
+      </button>
+
+      <button id="btn-descargar-pdf" class="bg-white border border-gray-300 text-gray-700 px-4 py-1.5 rounded-md hover:bg-gray-100 shadow transition font-medium text-sm flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 4v16m0 0l-6-6m6 6l6-6"/>
+        </svg>
+        Descargar PDF
+      </button>
+    </div>
   </div>
 
   <!-- Chat -->
@@ -69,3 +80,11 @@
 </style>
 
 <script src="/js/chatFrontend.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- Módulo PDF -->
+<script type="module">
+  import { generarPDFdeChat } from '/js/chatPDF.js';
+  const btn = document.getElementById("btn-descargar-pdf");
+  if (btn) btn.addEventListener("click", generarPDFdeChat);
+</script>
