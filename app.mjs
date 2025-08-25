@@ -68,7 +68,7 @@ app.set("layout", "layout");
 app.use('/', chatRoutes);
 
 // Página raíz
-app.get('/', (_req, res) => res.send('Asistente MITRE RAG funcionando'));
+app.get("/", (_req, res) => res.render("landing"));
 
 // Ruta 404
 app.use((req, res) => {
