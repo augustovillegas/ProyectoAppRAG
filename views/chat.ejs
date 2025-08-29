@@ -1,55 +1,54 @@
 <section class="mt-4 mb-4 w-full flex flex-col flex-1 px-4 sm:px-6 max-w-full lg:max-w-5xl mx-auto text-[17px] sm:text-sm">
 
+  <!-- Info + Botones -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 w-full mb-4">
+    <div class="bg-blue-100 border border-blue-300 text-blue-800 p-2 rounded-lg text-base sm:text-sm w-full sm:flex-1 flex items-center gap-2">
+      <img src="/icons/info.svg" alt="Info" class="w-5 h-5 shrink-0" />
+      <div>Este chat guarda tus preguntas y respuestas de forma temporal en tu navegador.</div>
+    </div>
 
-<!-- Info + Botones en la misma fila en desktop, en columna en móvil -->
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 w-full mb-4">
+    <button id="btn-reset" class="w-full sm:w-auto bg-white border border-gray-300 text-gray-700 px-5 py-2 rounded-md hover:bg-gray-100 shadow transition font-medium text-base sm:text-sm flex items-center justify-center gap-2">
+      <img src="/icons/reset.svg" alt="Reiniciar" class="w-5 h-5 sm:w-4 sm:h-4" />
+      Reiniciar chat
+    </button>
 
-  <div class="bg-blue-100 border border-blue-300 text-blue-800 p-2 rounded-lg text-base sm:text-sm w-full sm:flex-1 flex items-center gap-2">
-  <img src="/icons/info.svg" alt="Info" class="w-5 h-5 shrink-0" />
-  <div>Este chat guarda tus preguntas y respuestas de forma temporal en tu navegador.</div>
-</div>
+    <button id="btn-descargar-pdf" class="w-full sm:w-auto bg-white border border-gray-300 text-gray-700 px-5 py-2 rounded-md hover:bg-gray-100 shadow transition font-medium text-base sm:text-sm flex items-center justify-center gap-2">
+      <img src="/icons/download.svg" alt="Descargar" class="w-5 h-5 sm:w-4 sm:h-4" />
+      Descargar PDF
+    </button>
+  </div>
 
-  <!-- Botón Reiniciar chat -->
-  <button id="btn-reset" class="w-full sm:w-auto bg-white border border-gray-300 text-gray-700 px-5 py-2 rounded-md hover:bg-gray-100 shadow transition font-medium text-base sm:text-sm flex items-center justify-center gap-2">
-  <img src="/icons/reset.svg" alt="Reiniciar" class="w-5 h-5 sm:w-4 sm:h-4" />
-   Reiniciar chat
-  </button>
+  <!-- Modelo activo + selector -->
+  <div class="flex flex-wrap items-center justify-end gap-2 text-xs text-gray-500 italic mb-2 px-2">
+    <div>Modelo utilizado: <span class="font-semibold"><%= modeloIA %></span></div>
+    <select id="modeloIA" name="modeloIA" class="border rounded px-3 py-1 text-xs text-gray-700 bg-white focus:outline-none">
+      <option value="gpt-4o-mini" <%= modeloIA === 'gpt-4o-mini' ? 'selected' : '' %>>ChatGPT (GPT-4o)</option>
+      <option value="deepseek-chat" <%= modeloIA === 'deepseek-chat' ? 'selected' : '' %>>DeepSeek</option>
+    </select>
+  </div>
 
-  <!-- Botón Descargar PDF -->
-  <button id="btn-descargar-pdf" class="w-full sm:w-auto bg-white border border-gray-300 text-gray-700 px-5 py-2 rounded-md hover:bg-gray-100 shadow transition font-medium text-base sm:text-sm flex items-center justify-center gap-2">
-  <img src="/icons/download.svg" alt="Descargar" class="w-5 h-5 sm:w-4 sm:h-4" />
-   Descargar PDF
-  </button>
-</div>
+  <!-- Chat -->
+  <div id="chat-box" class="flex-1 min-h-[300px] overflow-y-auto space-y-5 mb-4 border border-gray-300 rounded-xl p-5 bg-white shadow-inner scroll-smooth"></div>
 
+  <!-- Indicador escribiendo -->
+  <div id="asistente-escribiendo" class="hidden text-[16px] text-gray-500 animate-pulse mb-2 px-1 font-mono">
+    <span class="text-red-600 font-bold">Asistente:</span>
+    <span class="ml-2">escribiendo<span class="dots">...</span></span>
+  </div>
 
-<!-- Chat -->
-<div id="chat-box" class="flex-1 min-h-[300px] overflow-y-auto space-y-5 mb-4 border border-gray-300 rounded-xl p-5 bg-white shadow-inner scroll-smooth">
-<!-- mensajes -->
-</div>
+  <!-- Formulario chat -->
+  <form id="form-chat" class="relative bg-white border border-gray-300 rounded-full shadow px-4 flex items-center w-full mt-2" method="POST" action="/chat">
+    <textarea name="pregunta" id="pregunta" rows="1" required
+      placeholder="Escribí tu consulta y presioná Enter..."
+      class="flex-1 resize-none overflow-hidden rounded-full p-4 text-[17px] sm:text-sm placeholder:text-sm sm:placeholder:text-base focus:outline-none focus:ring-0 border-none leading-snug"
+      style="min-height: 56px; max-height: 160px;"></textarea>
 
-
-<!-- Indicador escribiendo -->
-<div id="asistente-escribiendo" class="hidden text-[16px] text-gray-500 animate-pulse mb-2 px-1 font-mono">
-<span class="text-red-600 font-bold">Asistente:</span>
-<span class="ml-2">escribiendo<span class="dots">...</span></span>
-</div>
-
-
-<!-- Formulario chat -->
-<form id="form-chat" class="relative bg-white border border-gray-300 rounded-full shadow px-4 flex items-center w-full mt-2">
-<textarea name="pregunta" id="pregunta" rows="1" required
- placeholder="Escribí tu consulta y presioná Enter..."
- class="flex-1 resize-none overflow-hidden rounded-full p-4 text-[17px] sm:text-sm placeholder:text-sm sm:placeholder:text-base focus:outline-none focus:ring-0 border-none leading-snug"
- style="min-height: 56px; max-height: 160px;"></textarea>
-
-
-<button type="submit" class="ml-2 text-white bg-red-600 hover:bg-red-700 transition rounded-full w-12 h-12 flex items-center justify-center shadow-md">
-<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
-</svg>
-</button>
-</form>
+    <button type="submit" class="ml-2 text-white bg-red-600 hover:bg-red-700 transition rounded-full w-12 h-12 flex items-center justify-center shadow-md">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
+      </svg>
+    </button>
+  </form>
 </section>
 
 <!-- Modal reinicio -->
@@ -84,10 +83,7 @@
 
 <script src="/js/chatFrontend.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-<!-- Módulo PDF -->
 <script type="module">
   import { generarPDFdeChat } from '/js/chatPDF.js';
-  const btn = document.getElementById("btn-descargar-pdf");
-  if (btn) btn.addEventListener("click", generarPDFdeChat);
+  document.getElementById("btn-descargar-pdf")?.addEventListener("click", generarPDFdeChat);
 </script>

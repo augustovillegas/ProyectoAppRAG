@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("#form-chat");
   const textarea = document.querySelector("#pregunta");
+  const modeloSelect = document.querySelector("#modeloIA");
   const writingIndicator = document.getElementById("asistente-escribiendo");
   const chatBox = document.getElementById("chat-box");
   const btnReset = document.getElementById("btn-reset");
@@ -10,12 +11,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const STORAGE_KEY = "chatHistorialMITRE";
 
-  // 🔁 Cargar historial
+  // ✅ Restaurar modelo desde localStorage si existe
+  const modeloGuardado = localStorage.getItem("modeloIA");
+  if (modeloSelect && modeloGuardado) {
+    modeloSelect.value = modeloGuardado;
+    const modeloActivoDiv = document.getElementById("modelo-activo");
+    if (modeloActivoDiv) {
+      modeloActivoDiv.innerHTML = `Modelo utilizado: <span class="font-semibold">${modeloGuardado}</span>`;
+    }
+  }
+
+  // ✅ Actualiza el texto del modelo activo al cambiar el selector
+  modeloSelect?.addEventListener("change", () => {
+    const modeloElegido = modeloSelect.value;
+    localStorage.setItem("modeloIA", modeloElegido);
+    const modeloActivoDiv = document.getElementById("modelo-activo");
+    if (modeloActivoDiv) {
+      modeloActivoDiv.innerHTML = `Modelo utilizado: <span class="font-semibold">${modeloElegido}</span>`;
+    }
+  });
+
   const historial = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
   historial.forEach(msg => renderMensaje(msg.role, msg.content, msg.citations));
   scrollAlFinal();
 
-  // 🔁 Ajustar tamaño del textarea dinámicamente
   function autoResizeTextarea() {
     textarea.style.height = "auto";
     textarea.style.height = Math.min(textarea.scrollHeight, 120) + "px";
@@ -24,7 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
   textarea.addEventListener("input", autoResizeTextarea);
   autoResizeTextarea();
 
-  // 🔴 Modal reinicio
   if (btnReset) {
     btnReset.addEventListener("click", () => {
       modal.classList.remove("hidden");
@@ -46,10 +64,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ✅ Enviar pregunta
+  // ✅ Enviar pregunta con modeloIA incluido
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const pregunta = textarea.value.trim();
+    const modeloIA = modeloSelect?.value || "gpt-4o-mini";
 
     if (pregunta.length < 3) {
       renderMensaje("error", "⚠️ La pregunta debe tener al menos 3 caracteres.");
@@ -69,7 +88,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const res = await fetch("/api/chat/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: pregunta }),
+        body: JSON.stringify({
+          question: pregunta,
+          modeloIA
+        }),
       });
 
       const data = await res.json();
@@ -85,6 +107,17 @@ document.addEventListener("DOMContentLoaded", () => {
       guardarMensaje("assistant", data.answer, data.citations || []);
       textarea.value = "";
       autoResizeTextarea();
+
+      // ✅ ACTUALIZA SELECTOR, TEXTO Y PERSISTE MODELO
+      if (data.modeloIA && modeloSelect) {
+        modeloSelect.value = data.modeloIA;
+        localStorage.setItem("modeloIA", data.modeloIA);
+      }
+
+      const modeloActivoDiv = document.getElementById("modelo-activo");
+      if (modeloActivoDiv) {
+        modeloActivoDiv.innerHTML = `Modelo utilizado: <span class="font-semibold">${data.modeloIA || modeloIA}</span>`;
+      }
     } catch (err) {
       mostrarEscribiendo(false);
       const msg = "❌ Error de red o del servidor.";
@@ -110,8 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
         : "bg-red-100 border-red-400 text-red-700"
     } border p-4 rounded-lg w-full max-w-[90%] md:max-w-2xl lg:max-w-3xl xl:max-w-4xl`;
 
-    const label =
-      isUser ? "Tú" : isAssistant ? "Asistente" : "Sistema";
+    const label = isUser ? "Tú" : isAssistant ? "Asistente" : "Sistema";
 
     bubble.innerHTML = `<p class="font-semibold ${isError ? "text-red-600" : ""}">${label}:</p>
                         <p class="whitespace-pre-line">${text}</p>`;
