@@ -3,6 +3,28 @@ import fetch from 'node-fetch';
 const API_URL = 'https://api.deepseek.com/v1/chat/completions';
 const API_KEY = process.env.DEEPSEEK_API_KEY;
 
+function mask(key = '') {
+  if (!key) return '(vacío)';
+  return key.slice(0, 4) + '****' + key.slice(-4);
+}
+
+/**
+ * Inicializa cliente DeepSeek con validación
+ */
+export const inicializarDeepSeek = () => {
+  console.log("🔌 [DeepSeek] Intentando inicializar cliente…", mask(API_KEY));
+
+  if (!API_KEY) {
+    console.error("❌ [DeepSeek] DEEPSEEK_API_KEY no configurado en .env");
+    process.exit(1);
+  }
+
+  console.log("✅ [DeepSeek] Cliente inicializado correctamente");
+};
+
+/**
+ * Obtiene respuesta del modelo DeepSeek
+ */
 export async function getDeepSeekResponse(messages, temperature = 0.2) {
   if (!API_KEY) {
     throw new Error("❌ [DeepSeek] API Key no configurada");

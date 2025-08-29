@@ -11,6 +11,7 @@ import { existsSync, rmSync } from 'fs';
 import { spawn } from 'child_process';
 import * as lancedb from '@lancedb/lancedb';
 import { getRelevantDocs } from './repository/mitreRepository.mjs';
+import { inicializarDeepSeek } from './config/deepseek.mjs';
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -71,6 +72,7 @@ async function prepararBaseDeDatos() {
 // 🏁 Inicialización completa
 await prepararBaseDeDatos();
 await inicializarOpenAI();
+await inicializarDeepSeek();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());

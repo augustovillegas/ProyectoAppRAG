@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const STORAGE_KEY = "chatHistorialMITRE";
 
-  // ✅ Restaurar modelo desde localStorage si existe
   const modeloGuardado = localStorage.getItem("modeloIA");
   if (modeloSelect && modeloGuardado) {
     modeloSelect.value = modeloGuardado;
@@ -21,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ✅ Actualiza el texto del modelo activo al cambiar el selector
   modeloSelect?.addEventListener("change", () => {
     const modeloElegido = modeloSelect.value;
     localStorage.setItem("modeloIA", modeloElegido);
@@ -64,7 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ✅ Enviar pregunta con modeloIA incluido
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const pregunta = textarea.value.trim();
@@ -72,11 +69,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (pregunta.length < 3) {
       renderMensaje("error", "⚠️ La pregunta debe tener al menos 3 caracteres.");
+      guardarMensaje("error", "⚠️ La pregunta debe tener al menos 3 caracteres.");
       return;
     }
 
     if (pregunta.length > 2000) {
       renderMensaje("error", "⚠️ La pregunta es demasiado extensa. Por favor resumila o divídila.");
+      guardarMensaje("error", "⚠️ La pregunta es demasiado extensa.");
       return;
     }
 
@@ -103,12 +102,13 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      renderMensaje("assistant", data.answer, data.citations || []);
+      const modeloNombre = modeloIAtoNombre(data.modeloIA || modeloIA);
+      renderMensaje("assistant", data.answer, data.citations || [], modeloNombre);
       guardarMensaje("assistant", data.answer, data.citations || []);
+
       textarea.value = "";
       autoResizeTextarea();
 
-      // ✅ ACTUALIZA SELECTOR, TEXTO Y PERSISTE MODELO
       if (data.modeloIA && modeloSelect) {
         modeloSelect.value = data.modeloIA;
         localStorage.setItem("modeloIA", data.modeloIA);
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  function renderMensaje(role, text, citations = []) {
+  function renderMensaje(role, text, citations = [], modeloNombre = null) {
     const wrapper = document.createElement("div");
     const isUser = role === "user";
     const isAssistant = role === "assistant";
@@ -141,12 +141,16 @@ document.addEventListener("DOMContentLoaded", () => {
         : isAssistant
         ? "bg-gray-100 border-gray-300 text-gray-800"
         : "bg-red-100 border-red-400 text-red-700"
-    } border p-4 rounded-lg w-full max-w-[90%] md:max-w-2xl lg:max-w-3xl xl:max-w-4xl`;
+    } border p-4 rounded-2xl w-full max-w-[90%] md:max-w-2xl lg:max-w-3xl xl:max-w-4xl shadow-sm`;
 
     const label = isUser ? "Tú" : isAssistant ? "Asistente" : "Sistema";
 
-    bubble.innerHTML = `<p class="font-semibold ${isError ? "text-red-600" : ""}">${label}:</p>
-                        <p class="whitespace-pre-line">${text}</p>`;
+    bubble.innerHTML = `
+      <p class="text-xs font-semibold uppercase tracking-wide ${
+        isUser ? "text-yellow-700" : isAssistant ? "text-gray-500" : "text-red-600"
+      }">${label}</p>
+      <p class="whitespace-pre-line">${text}</p>
+    `;
 
     if (isAssistant && citations.length) {
       bubble.innerHTML += `
@@ -160,9 +164,27 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>`;
     }
 
+    if (isAssistant && modeloNombre) {
+      bubble.innerHTML += `
+        <div class="mt-4 text-[11px] text-gray-400 italic text-right">
+          💡 Respuesta generada por: <span class="font-medium">${modeloNombre}</span>
+        </div>`;
+    }
+
     wrapper.appendChild(bubble);
     chatBox.appendChild(wrapper);
     scrollAlFinal();
+  }
+
+  function modeloIAtoNombre(id) {
+    switch (id) {
+      case "gpt-4o-mini":
+        return "ChatGPT (GPT-4o)";
+      case "deepseek-chat":
+        return "DeepSeek";
+      default:
+        return id;
+    }
   }
 
   function guardarMensaje(role, content, citations = []) {

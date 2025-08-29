@@ -1,5 +1,3 @@
-// 📁 public/js/chatPDF.js
-
 export function generarPDFdeChat() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: "mm", format: "a4" });
@@ -101,10 +99,20 @@ export function generarPDFdeChat() {
       href: a.getAttribute("href") || "",
     }));
 
-    return { role, contentText, citLinks };
+    let modeloTexto = "";
+    try {
+      const modeloDiv = Array.from(bubble.querySelectorAll("div")).find(d =>
+        d.innerText?.includes("Respuesta generada por")
+      );
+      if (modeloDiv) {
+        modeloTexto = cleanText(modeloDiv.innerText.trim());
+      }
+    } catch {}
+
+    return { role, contentText, citLinks, modeloTexto };
   }
 
-  function drawMessageCard({ role, contentText, citLinks }) {
+  function drawMessageCard({ role, contentText, citLinks, modeloTexto }) {
     const isUser = role === "user";
     const isAssistant = role === "assistant";
     const isError = role === "error";
@@ -115,16 +123,13 @@ export function generarPDFdeChat() {
 
     const innerWidth = CONTENT.maxWidth() - CONTENT.pad * 2;
 
-    // Texto principal
     setFont({ style: "normal", size: 11 });
     const textLines = split(contentText || " ", innerWidth);
     const lineHeight = doc.getLineHeight() / doc.internal.scaleFactor;
     const textHeight = lineHeight * textLines.length;
 
-    // Etiqueta
     const labelHeight = lineHeight + 1;
 
-    // Citas
     let citationsHeight = 0;
     let citationLines = [];
     if (citLinks?.length) {
@@ -134,8 +139,9 @@ export function generarPDFdeChat() {
       citationsHeight = lineHeight + (linesCount * lineHeight) + 1;
     }
 
-    // Altura total
-    const cardHeight = CONTENT.pad * 2 + labelHeight + textHeight + citationsHeight + 2;
+    const modeloIAHeight = (isAssistant && modeloTexto) ? lineHeight + 2 : 0;
+
+    const cardHeight = CONTENT.pad * 2 + labelHeight + textHeight + citationsHeight + modeloIAHeight + 2;
 
     addPageIfNeeded(cardHeight);
 
@@ -144,7 +150,6 @@ export function generarPDFdeChat() {
     setFont({ style: "bold", size: 12, color: isUser ? COLORS.labelUser : COLORS.labelAssistant });
     doc.text(label, CONTENT.x + CONTENT.pad, CONTENT.y + CONTENT.pad + 4.5);
 
-    // 🟡 Mejora clave: separación extra entre "Usuario" y contenido
     setFont({ style: "normal", size: 11, color: COLORS.text });
     const textY = CONTENT.y + CONTENT.pad + labelHeight + 4;
     doc.text(textLines, CONTENT.x + CONTENT.pad, textY);
@@ -161,6 +166,11 @@ export function generarPDFdeChat() {
         doc.text(lines, CONTENT.x + CONTENT.pad, currentY);
         currentY += lines.length * lineHeight;
       }
+    }
+
+    if (isAssistant && modeloTexto) {
+      setFont({ style: "italic", size: 10, color: COLORS.meta });
+      doc.text(modeloTexto, CONTENT.x + CONTENT.pad, currentY + 4);
     }
 
     CONTENT.y += cardHeight + 6;
@@ -203,9 +213,13 @@ export function generarPDFdeChat() {
 
   const wrappers = Array.from(chatBox.children).filter(el => el.tagName === "DIV");
   wrappers.forEach(wrapper => {
-    const parsed = parseBubble(wrapper);
-    if (!parsed) return;
-    drawMessageCard(parsed);
+    try {
+      const parsed = parseBubble(wrapper);
+      if (!parsed) return;
+      drawMessageCard(parsed);
+    } catch (e) {
+      console.error("❌ Error al procesar un bloque del chat:", e);
+    }
   });
 
   addFooters();
