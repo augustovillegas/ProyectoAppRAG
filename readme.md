@@ -34,7 +34,9 @@ El sistema se estructura en dos grandes módulos:
 
 ### 🧠 Modelos de Lenguaje
 - [x] ChatGPT (gpt-4o-mini)
-- [x] DeepSeek Chat
+- [x] ChatGPT (gpt-5)
+- [x] DeepSeek Chat (base)
+- [x] DeepSeek R1
 - Modular y extensible a futuros modelos.
 
 ### 💬 Prompts y Respuestas
