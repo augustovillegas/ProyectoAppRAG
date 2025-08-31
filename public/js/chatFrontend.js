@@ -177,15 +177,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function modeloIAtoNombre(id) {
-    switch (id) {
-      case "gpt-4o-mini":
-        return "ChatGPT (GPT-4o)";
-      case "deepseek-chat":
-        return "DeepSeek";
-      default:
-        return id;
-    }
+  switch (id) {
+    case "gpt-4o-mini":
+      return "ChatGPT (GPT‑4o mini)";
+    case "gpt-5":
+      return "ChatGPT (GPT‑5)";
+    case "deepseek-chat":
+      return "DeepSeek";
+    case "deepseek-R1":
+      return "DeepSeek R1";
+    default:
+      return id;
   }
+ }
 
   function guardarMensaje(role, content, citations = []) {
     const actual = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];

@@ -8,9 +8,6 @@ function mask(key = '') {
   return key.slice(0, 4) + '****' + key.slice(-4);
 }
 
-/**
- * Inicializa cliente DeepSeek con validación
- */
 export const inicializarDeepSeek = () => {
   console.log("🔌 [DeepSeek] Intentando inicializar cliente…", mask(API_KEY));
 
@@ -22,13 +19,12 @@ export const inicializarDeepSeek = () => {
   console.log("✅ [DeepSeek] Cliente inicializado correctamente");
 };
 
-/**
- * Obtiene respuesta del modelo DeepSeek
- */
-export async function getDeepSeekResponse(messages, temperature = 0.2) {
+export async function getDeepSeekResponse(messages, temperature = 0.2, model = 'deepseek-chat') {
   if (!API_KEY) {
     throw new Error("❌ [DeepSeek] API Key no configurada");
   }
+
+  let apiModel = model === 'deepseek-R1' ? 'deepseek-reasoner' : model;
 
   const response = await fetch(API_URL, {
     method: 'POST',
@@ -37,7 +33,7 @@ export async function getDeepSeekResponse(messages, temperature = 0.2) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      model: 'deepseek-chat',
+      model: apiModel,
       messages,
       temperature
     })
@@ -52,3 +48,4 @@ export async function getDeepSeekResponse(messages, temperature = 0.2) {
   const data = await response.json();
   return data.choices?.[0]?.message?.content || 'Sin respuesta';
 }
+

@@ -22,8 +22,10 @@
   <div class="flex flex-wrap items-center justify-end gap-2 text-xs text-gray-500 italic mb-2 px-2">
     <div>Modelo utilizado: <span class="font-semibold"><%= modeloIA %></span></div>
     <select id="modeloIA" name="modeloIA" class="border rounded px-3 py-1 text-xs text-gray-700 bg-white focus:outline-none">
-      <option value="gpt-4o-mini" <%= modeloIA === 'gpt-4o-mini' ? 'selected' : '' %>>ChatGPT (GPT-4o)</option>
-      <option value="deepseek-chat" <%= modeloIA === 'deepseek-chat' ? 'selected' : '' %>>DeepSeek</option>
+    <option value="gpt-4o-mini" <%= modeloIA === 'gpt-4o-mini' ? 'selected' : '' %>>ChatGPT (GPT‑4o mini)</option>
+    <option value="gpt-5" <%= modeloIA === 'gpt-5' ? 'selected' : '' %>>ChatGPT (GPT‑5)</option>
+    <option value="deepseek-chat" <%= modeloIA === 'deepseek-chat' ? 'selected' : '' %>>DeepSeek</option>
+    <option value="deepseek-R1" <%= modeloIA === 'deepseek-R1' ? 'selected' : '' %>>DeepSeek R1</option>
     </select>
   </div>
 
